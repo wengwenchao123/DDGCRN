@@ -31,4 +31,10 @@ python run.py --datasets {DATASET_NAME} --mode {MODE_NAME}
 ```
 Replace `{DATASET_NAME}` with one of `PEMSD3`, `PEMSD4`, `PEMSD7`, `PEMSD8`, `PEMSD7(L)`, `PEMSD7(M)`
 
-such as `bash python run.py --datasets PEMSD4`
+such as `python run.py --datasets PEMSD4`
+
+There are two options for `{MODE_NAME}` : `train` and `test`
+
+Selecting 'train' will retrain the model and save the trained model parameters and records in the 'experiment' folder.
+
+With 'test' selected, run.py will import the trained model parameters from `{DATASET_NAME}.pth` in the 'pre-trained' folder.
