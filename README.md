@@ -1,5 +1,4 @@
-# An efficient and effective Decomposition Dynamic Graph
-Convolutional Recurrent Network for Traffic Forecasting
+# Decomposition Dynamic Graph Conolutional Recurrent Network for Traffic Forecasting  
 
 
 ## 1. Table of Contents
