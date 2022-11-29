@@ -17,3 +17,5 @@
 # Data Preparation
 
 For convenience, we package these datasets used in our model in [Google Drive](https://drive.google.com/drive/folders/1OQYVddI5icsHwSVWtRHbqJ-xG7242q1r?usp=share_link).
+
+Unzip the downloaded dataset files to the main file directory, the same directory as run.py.
