@@ -29,3 +29,6 @@ Python 3.6.5, Pytorch 1.9.0, Numpy 1.16.3, argparse and configparser
 ```bash
 python run.py --datasets {DATASET_NAME} --mode {MODE_NAME}
 ```
+Replace `{DATASET_NAME}` with one of `PEMSD3`, `PEMSD4`, `PEMSD7`, `PEMSD8`, `PEMSD7(L)`, `PEMSD7(M)`
+
+such as `bash python run.py --datasets PEMSD4`
