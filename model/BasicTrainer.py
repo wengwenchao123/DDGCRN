@@ -4,11 +4,11 @@ import os
 import time
 import copy
 import numpy as np
-import pynvml
+# import pynvml
 from lib.logger import get_logger
 from lib.metrics import All_Metrics
-pynvml.nvmlInit()
-handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+# pynvml.nvmlInit()
+# handle = pynvml.nvmlDeviceGetHandleByIndex(0)
 class Trainer(object):
     def __init__(self, model, loss, optimizer, train_loader, val_loader, test_loader,
                  scaler, args, lr_scheduler=None):
@@ -147,7 +147,7 @@ class Trainer(object):
             vaild_loss.append(val_epoch_loss)
 
             # epoch_time = time.time()
-            meminfo = pynvml.nvmlDeviceGetMemoryInfo(handle)
+            # meminfo = pynvml.nvmlDeviceGetMemoryInfo(handle)
             test_epoch_loss = self.test_epoch(epoch, test_dataloader, 1)
             # test_loss.append(test_epoch_loss)
             # train_time.append(time.time()-start_time)
