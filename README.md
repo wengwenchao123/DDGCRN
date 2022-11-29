@@ -9,8 +9,6 @@
 
 * model: implementation of our model 
 
-* datasets: datasets used in our experiments
-
 * pre-trained:  pre-trained model parameters
 
 
