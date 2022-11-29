@@ -19,3 +19,7 @@
 For convenience, we package these datasets used in our model in [Google Drive](https://drive.google.com/drive/folders/1OQYVddI5icsHwSVWtRHbqJ-xG7242q1r?usp=share_link).
 
 Unzip the downloaded dataset files to the main file directory, the same directory as run.py.
+
+## Requirements
+
+Python 3.6.5, Pytorch 1.1.0, Numpy 1.16.3, argparse and configparser
