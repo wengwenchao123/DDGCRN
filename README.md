@@ -37,4 +37,4 @@ There are two options for `{MODE_NAME}` : `train` and `test`
 
 Selecting `train` will retrain the model and save the trained model parameters and records in the `experiment` folder.
 
-With 'test' selected, run.py will import the trained model parameters from `{DATASET_NAME}.pth` in the 'pre-trained' folder.
+With `test` selected, run.py will import the trained model parameters from `{DATASET_NAME}.pth` in the 'pre-trained' folder.
