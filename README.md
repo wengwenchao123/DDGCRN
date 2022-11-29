@@ -7,7 +7,7 @@
 
 * lib: contains self-defined modules for our work, such as data loading, data pre-process, normalization, and evaluate metrics.
 
-* model: implementation of our AGCRN model 
+* model: implementation of our model 
 
 * datasets: datasets used in our experiments
 
