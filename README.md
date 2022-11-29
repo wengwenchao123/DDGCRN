@@ -20,6 +20,12 @@ For convenience, we package these datasets used in our model in [Google Drive](h
 
 Unzip the downloaded dataset files to the main file directory, the same directory as run.py.
 
-## Requirements
+# Requirements
 
-Python 3.6.5, Pytorch 1.1.0, Numpy 1.16.3, argparse and configparser
+Python 3.6.5, Pytorch 1.9.0, Numpy 1.16.3, argparse and configparser
+
+# Model Training
+
+```bash
+python run.py --datasets {DATASET_NAME} --mode {MODE_NAME}
+```
