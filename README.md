@@ -1,4 +1,5 @@
-# DDGCRN
+# An efficient and effective Decomposition Dynamic Graph
+Convolutional Recurrent Network for Traffic Forecasting
 
 
 ## 1. Table of Contents
