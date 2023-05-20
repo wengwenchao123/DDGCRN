@@ -1,5 +1,6 @@
-# Decomposition Dynamic Graph Conolutional Recurrent Network for Traffic Forecasting  
+# [Pattern Recognition] Decomposition Dynamic Graph Conolutional Recurrent Network for Traffic Forecasting  
 
+This is a PyTorch implementation of Decomposition Dynamic Graph Conolutional Recurrent Network for Traffic Forecasting, as described in our paper: [Jiawei Jiang], Weng, Wenchao (https://github.com/wengwenchao123/DDGCRN/)\*, Fan Jin ,Wu Huifeng and Hu Yujie ,Tian Hao, Zhu Fu, Wu Jia,  **[A Decomposition Dynamic Graph Convolutional Recurrent Network for Traffic Forecasting]([https://arxiv.org/abs/2301.07945](https://www.sciencedirect.com/science/article/pii/S0031320323003710))**.
 
 ## 1. Table of Contents
 
@@ -37,3 +38,17 @@ Selecting `train` will retrain the model and save the trained model parameters a
 
 With `test` selected, run.py will import the trained model parameters from `{DATASET_NAME}.pth` in the 'pre-trained' folder.
 
+## Cite
+
+If you find the paper useful, please cite as following:
+
+```
+@article{weng2023decomposition,
+  title={A Decomposition Dynamic Graph Convolutional Recurrent Network for Traffic Forecasting},
+  author={Weng, Wenchao and Fan, Jin and Wu, Huifeng and Hu, Yujie and Tian, Hao and Zhu, Fu and Wu, Jia},
+  journal={Pattern Recognition},
+  pages={109670},
+  year={2023},
+  publisher={Elsevier}
+}
+```
