@@ -41,7 +41,7 @@ class Trainer(object):
     def val_epoch(self, epoch, val_dataloader, i=2):
         self.model.eval()
         total_val_loss = 0
-
+        epoch_time = time.time()
         with torch.no_grad():
             for batch_idx, (data, target) in enumerate(val_dataloader):
                 data = data
@@ -49,19 +49,19 @@ class Trainer(object):
                 output = self.model(data, i)
                 if self.args.real_value:
                     output = self.scaler.inverse_transform(output)
-                    label = self.scaler.inverse_transform(label)
+                    # label = self.scaler.inverse_transform(label)
                 loss = self.loss(output.cuda(), label)
                 #a whole batch of Metr_LA is filtered
                 if not torch.isnan(loss):
                     total_val_loss += loss.item()
         val_loss = total_val_loss / len(val_dataloader)
-        self.logger.info('**********Val Epoch {}: average Loss: {:.6f}'.format(epoch, val_loss))
+        self.logger.info('***********Val Epoch {}: average Loss: {:.6f}, train time: {:.2f} s'.format(epoch, val_loss, time.time() - epoch_time))
         return val_loss
 
     def test_epoch(self, epoch, test_dataloader, i=2):
         self.model.eval()
         total_test_loss = 0
-
+        epoch_time = time.time()
         with torch.no_grad():
             for batch_idx, (data, target) in enumerate(test_dataloader):
                 data = data
@@ -69,18 +69,19 @@ class Trainer(object):
                 output = self.model(data, i)
                 if self.args.real_value:
                     output = self.scaler.inverse_transform(output)
-                    label = self.scaler.inverse_transform(label)
+                    # label = self.scaler.inverse_transform(label)
                 loss = self.loss(output.cuda(), label)
                 #a whole batch of Metr_LA is filtered
                 if not torch.isnan(loss):
                     total_test_loss += loss.item()
         test_loss = total_test_loss / len(test_dataloader)
-        self.logger.info('**********test Epoch {}: average Loss: {:.6f}'.format(epoch, test_loss))
+        self.logger.info('**********test Epoch {}: average Loss: {:.6f}, train time: {:.2f} s'.format(epoch, test_loss, time.time() - epoch_time))
         return test_loss
 
     def train_epoch(self, epoch, i=2):
         self.model.train()
         total_loss = 0
+        epoch_time = time.time()
         for batch_idx, (data, target) in enumerate(self.train_loader):
             data = data
             label = target[..., :self.args.output_dim]  # (..., 1)
@@ -92,7 +93,7 @@ class Trainer(object):
                 #原本这边它是只反归一化了label，修改后发现效果比论文里面的效果高了3个点，后面两年顶会能发出去真的是靠AGCRN的作者没发现这个问题
                 #上面和下面都修改了，不然就是都只反归一化label
                 output = self.scaler.inverse_transform(output)
-                label = self.scaler.inverse_transform(label)
+                # label = self.scaler.inverse_transform(label)
 
             loss = self.loss(output.cuda(), label)
             loss.backward()
@@ -108,7 +109,9 @@ class Trainer(object):
                 self.logger.info('Train Epoch {}: {}/{} Loss: {:.6f}'.format(
                     epoch, batch_idx+1, self.train_per_epoch, loss.item()))
         train_epoch_loss = total_loss/self.train_per_epoch
-        self.logger.info('**********Train Epoch {}: averaged Loss: {:.6f}'.format(epoch, train_epoch_loss))
+        self.logger.info(
+            '********Train Epoch {}: averaged Loss: {:.6f}, train time: {:.2f} s'.format(epoch, train_epoch_loss,
+                                                                                         time.time() - epoch_time))
 
         #learning rate decay
         if self.args.lr_decay:
@@ -285,20 +288,20 @@ class Trainer(object):
         #y_true = scaler.inverse_transform(torch.cat(y_true, dim=0))
         if args.real_value:
             y_pred = scaler.inverse_transform(torch.cat(y_pred, dim=0))
-            y_true = scaler.inverse_transform(torch.cat(y_true, dim=0))
+            y_true = torch.cat(y_true, dim=0)
         else:
             y_pred = torch.cat(y_pred, dim=0)
             y_true = torch.cat(y_true, dim=0)
         # np.save('./{}_true.npy'.format(args.dataset), y_true.cpu().numpy())
         # np.save('./{}_pred.npy'.format(args.dataset), y_pred.cpu().numpy())
         for t in range(y_true.shape[1]):
-            mae, rmse, mape, _, _ = All_Metrics(y_pred[:, t, ...], y_true[:, t, ...],
+            mae, rmse, mape, _, pcc = All_Metrics(y_pred[:, t, ...], y_true[:, t, ...],
                                                 args.mae_thresh, args.mape_thresh)
-            logger.info("Horizon {:02d}, MAE: {:.4f}, RMSE: {:.4f}, MAPE: {:.4f}%".format(
-                t + 1, mae, rmse, mape*100))
-        mae, rmse, mape, _, _ = All_Metrics(y_pred, y_true, args.mae_thresh, args.mape_thresh)
-        logger.info("Average Horizon, MAE: {:.4f}, RMSE: {:.4f}, MAPE: {:.4f}%".format(
-                    mae, rmse, mape*100))
+            logger.info("Horizon {:02d}, MAE: {:.4f}, RMSE: {:.4f}, MAPE: {:.4f}".format(
+                t + 1, mae, rmse, mape))
+        mae, rmse, mape, _, pcc = All_Metrics(y_pred, y_true, args.mae_thresh, args.mape_thresh)
+        logger.info("Average Horizon, MAE: {:.4f}, RMSE: {:.4f}, MAPE: {:.4f}".format(
+                    mae, rmse, mape))
 
     @staticmethod
     def _compute_sampling_threshold(global_step, k):
