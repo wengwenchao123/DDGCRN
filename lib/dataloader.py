@@ -34,7 +34,7 @@ def normalize_dataset(data, normalizer, column_wise=False):
             mean = data.mean()
             std = data.std()
         scaler = StandardScaler(mean, std)
-        data = scaler.transform(data)
+        # data = scaler.transform(data)
         print('Normalize the dataset by Standard Normalization')
     elif normalizer == 'None':
         scaler = NScaler()
@@ -48,9 +48,9 @@ def normalize_dataset(data, normalizer, column_wise=False):
         print('Normalize the dataset by Column Min-Max Normalization')
     else:
         raise ValueError
-    return data, scaler
+    return scaler
 
-def split_data_by_days(data, val_days, test_days, interval=60):
+def split_data_by_days(data, val_days, test_days, interval=30):
     '''
     :param data: [B, *]
     :param val_days:
@@ -59,9 +59,10 @@ def split_data_by_days(data, val_days, test_days, interval=60):
     :return:
     '''
     T = int((24*60)/interval)
-    test_data = data[-T*test_days:]
-    val_data = data[-T*(test_days + val_days): -T*test_days]
-    train_data = data[:-T*(test_days + val_days)]
+    x=-T * int(test_days)
+    test_data = data[-T*int(test_days):]
+    val_data = data[-T*int(test_days + val_days): -T*int(test_days)]
+    train_data = data[:-T*int(test_days + val_days)]
     return train_data, val_data, test_data
 
 def split_data_by_ratio(data, val_ratio, test_ratio):
@@ -85,42 +86,68 @@ def get_dataloader(args, normalizer = 'std', tod=False, dow=False, weather=False
     #load raw st dataset
     data = load_st_dataset(args.dataset)        # B, N, D
     #normalize st data
-    data, scaler = normalize_dataset(data, normalizer, args.column_wise)
+    # scaler = normalize_dataset(data, normalizer, args.column_wise)
 
     L, N, F = data.shape
 
     feature_list = [data]
 
+
     # numerical time_in_day
-    time_ind    = [i%288 / 288 for i in range(data.shape[0])]
+    time_ind    = [i%args.steps_per_day / args.steps_per_day for i in range(data.shape[0])]
     time_ind    = np.array(time_ind)
     time_in_day = np.tile(time_ind, [1, N, 1]).transpose((2, 1, 0))
     feature_list.append(time_in_day)
 
     # numerical day_in_week
-    day_in_week = [(i // 288)%7 for i in range(data.shape[0])]
+    day_in_week = [(i // args.steps_per_day)%7 for i in range(data.shape[0])]
     day_in_week = np.array(day_in_week)
     day_in_week = np.tile(day_in_week, [1, N, 1]).transpose((2, 1, 0))
     feature_list.append(day_in_week)
 
-    data = np.concatenate(feature_list, axis=-1)
+    # data = np.concatenate(feature_list, axis=-1)
+    x, y = Add_Window_Horizon(data, args.lag, args.horizon, single)
+    x_day, y_day = Add_Window_Horizon(time_in_day, args.lag, args.horizon, single)
+    x_week, y_week = Add_Window_Horizon(day_in_week, args.lag, args.horizon, single)
+    x, y = np.concatenate([x, x_day, x_week], axis=-1), np.concatenate([y, y_day, y_week], axis=-1)
 
-
-    #spilit dataset by days or by ratio
+    # spilit dataset by days or by ratio
     if args.test_ratio > 1:
-        data_train, data_val, data_test = split_data_by_days(data, args.val_ratio, args.test_ratio)
+        x_train, x_val, x_test = split_data_by_days(x, args.val_ratio, args.test_ratio)
+        y_train, y_val, y_test = split_data_by_days(y, args.val_ratio, args.test_ratio)
+        # day_train, day_val, day_test = split_data_by_days(time_in_day, args.val_ratio, args.test_ratio)
+        # week_train, week_val, week_test = split_data_by_days(day_in_week, args.val_ratio, args.test_ratio)
     else:
-        data_train, data_val, data_test = split_data_by_ratio(data, args.val_ratio, args.test_ratio)
-    #add time window
-    x_tra, y_tra = Add_Window_Horizon(data_train, args.lag, args.horizon, single)
-    x_val, y_val = Add_Window_Horizon(data_val, args.lag, args.horizon, single)
-    x_test, y_test = Add_Window_Horizon(data_test, args.lag, args.horizon, single)
-    print('Train: ', x_tra.shape, y_tra.shape)
+        x_train, x_val, x_test = split_data_by_ratio(x, args.val_ratio, args.test_ratio)
+        y_train, y_val, y_test = split_data_by_ratio(y, args.val_ratio, args.test_ratio)
+        # week_train, week_val, week_test = split_data_by_ratio(day_in_week, args.val_ratio, args.test_ratio)
+    # #normalize st data
+    scaler = normalize_dataset(x_train[..., :args.input_dim], normalizer, args.column_wise)
+    # # scaler1 = normalize_dataset(data_val, normalizer, args.column_wise)
+    # # scaler2 = normalize_dataset(data_test, normalizer, args.column_wise)
+    # # scaler3 = normalize_dataset(data, normalizer, args.column_wise)
+    #
+    x_train[..., :args.input_dim] = scaler.transform(x_train[..., :args.input_dim])
+    x_val[..., :args.input_dim] = scaler.transform(x_val[..., :args.input_dim])
+    x_test[..., :args.input_dim] = scaler.transform(x_test[..., :args.input_dim])
+    # y_train[...,:args.input_dim] = scaler.transform(y_train[...,:args.input_dim])
+    # y_val[...,:args.input_dim] = scaler.transform(y_val[...,:args.input_dim])
+    # y_test[...,:args.input_dim] = scaler.transform(y_test[...,:args.input_dim])
+    # data_train = np.concatenate([data_train,day_train,week_train], axis=-1)
+    # data_val = np.concatenate([data_val, day_val, week_val], axis=-1)
+    # data_test = np.concatenate([data_test, day_test, week_test], axis=-1)
+
+    # #add time window
+    # x_tra, y_tra = Add_Window_Horizon(data_train, args.lag, args.horizon, single)
+    # x_val, y_val = Add_Window_Horizon(data_val, args.lag, args.horizon, single)
+    # x_test, y_test = Add_Window_Horizon(data_test, args.lag, args.horizon, single)
+    print('Train: ', x_train.shape, y_train.shape)
     print('Val: ', x_val.shape, y_val.shape)
     print('Test: ', x_test.shape, y_test.shape)
+
     ##############get dataloader######################
-    train_dataloader = data_loader(x_tra, y_tra, args.batch_size, shuffle=True, drop_last=True)
-    if len(x_val) == 0:
+    train_dataloader = data_loader(x_train, y_train, args.batch_size, shuffle=True, drop_last=True)
+    if len(x_val[..., 0]) == 0:
         val_dataloader = None
     else:
         val_dataloader = data_loader(x_val, y_val, args.batch_size, shuffle=False, drop_last=True)
