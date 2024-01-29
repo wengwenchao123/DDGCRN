@@ -2,7 +2,16 @@
 
 This is a PyTorch implementation of Decomposition Dynamic Graph Conolutional Recurrent Network for Traffic Forecasting, as described in our paper: [Weng, Wenchao](https://github.com/wengwenchao123/DDGCRN/), Fan Jin ,Wu Huifeng and Hu Yujie ,Tian Hao, Zhu Fu, Wu Jia,  **[A Decomposition Dynamic Graph Convolutional Recurrent Network for Traffic Forecasting](https://www.sciencedirect.com/science/article/pii/S0031320323003710)**,Pattern Recognition 2023.
 
-## 1. Table of Contents
+## Update (2014/1/29)
+
+* Optimized the data processing part of the model by changing the normalization process from using the mean and variance of the entire dataset to using the mean and variance of the training set.
+
+* Improved the normalization operation when reading data, no longer normalizing the prediction target to avoid the abnormal MAPE issue on the PEMS03 dataset.
+
+* Enhanced the dataset splitting operation, changing from initially dividing the dataset and then segmenting samples to first segmenting samples and then dividing the dataset. This has increased the number of training and testing samples.
+
+
+## Table of Contents
 
 * configs: training Configs and model configs for each dataset
 
