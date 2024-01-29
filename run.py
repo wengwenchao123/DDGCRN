@@ -65,6 +65,7 @@ args.add_argument('--tod', default=config['data']['tod'], type=eval)
 args.add_argument('--normalizer', default=config['data']['normalizer'], type=str)
 args.add_argument('--column_wise', default=config['data']['column_wise'], type=eval)
 args.add_argument('--default_graph', default=config['data']['default_graph'], type=eval)
+args.add_argument('--steps_per_day', default=config['data']['steps_per_day'], type=int)
 
 #model
 args.add_argument('--input_dim', default=config['model']['input_dim'], type=int)
