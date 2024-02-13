@@ -61,3 +61,8 @@ If you find the paper useful, please cite as following:
   publisher={Elsevier}
 }
 ```
+
+## 7. More Related Works
+
+- [RGDAN: A random graph diffusion attention network for traffic prediction](https://doi.org/10.1016/j.neunet.2023.106093)
+
