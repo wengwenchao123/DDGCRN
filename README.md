@@ -62,7 +62,7 @@ If you find the paper useful, please cite as following:
 }
 ```
 
-## 7. More Related Works
+## More Related Works
 
 - [[Neural Networks] RGDAN: A random graph diffusion attention network for traffic prediction](https://doi.org/10.1016/j.neunet.2023.106093)
 
