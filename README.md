@@ -8,13 +8,22 @@ This is a PyTorch implementation of Decomposition Dynamic Graph Conolutional Rec
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/a-decomposition-dynamic-graph-convolutional/traffic-prediction-on-pems08)](https://paperswithcode.com/sota/traffic-prediction-on-pems08?p=a-decomposition-dynamic-graph-convolutional)
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/a-decomposition-dynamic-graph-convolutional/traffic-prediction-on-pemsd7-m)](https://paperswithcode.com/sota/traffic-prediction-on-pemsd7-m?p=a-decomposition-dynamic-graph-convolutional)
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/a-decomposition-dynamic-graph-convolutional/traffic-prediction-on-pemsd7-l)](https://paperswithcode.com/sota/traffic-prediction-on-pemsd7-l?p=a-decomposition-dynamic-graph-convolutional)
-## Update (2024/1/29)
+## Update
+ (2024/3/22)
+* Added a hyperparameter "days_per_week" for easy adjustment of the index quantity of cyclic embeddings.
 
+* Added instructions for using the hyperparameters "days_per_week" and "steps_per_day".
+<details>
+<summary>
+ (2024/1/29)</summary>
+  
 * Optimized the data processing part of the model by changing the normalization process from using the mean and variance of the entire dataset to using the mean and variance of the training set.
 
 * Improved the normalization operation when reading data, no longer normalizing the prediction target to avoid the abnormal MAPE issue on the PEMS03 dataset.
 
 * Enhanced the dataset splitting operation, changing from initially dividing the dataset and then segmenting samples to first segmenting samples and then dividing the dataset. This has increased the number of training and testing samples.
+</details>
+
 
 
 ## Table of Contents
@@ -26,6 +35,12 @@ This is a PyTorch implementation of Decomposition Dynamic Graph Conolutional Rec
 * model: implementation of our model 
 
 * pre-trained:  pre-trained model parameters
+
+## Usage Instructions for Hyperparameters:
+
+days_per_week: The time intervals for data collection vary across different datasets. Adjust this hyperparameter based on the time intervals of the dataset being used. For example, in the PEMS04 dataset with a time interval of "5" minutes, set this parameter to "7200/5=288". Similarly, in the NYC-Bike dataset with a time interval of "30" minutes, set this parameter to "7200/30=48".
+
+steps_per_day: The data collection scope varies across different datasets. For instance, PEMS04 collects data from Monday to Sunday, so set this parameter to "7". Conversely, for the PEMS07(M) dataset, data is collected only from Monday to Friday, so set this parameter to "5".
 
 
 # Data Preparation
