@@ -10,7 +10,7 @@ This is a PyTorch implementation of Decomposition Dynamic Graph Conolutional Rec
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/a-decomposition-dynamic-graph-convolutional/traffic-prediction-on-pemsd7-l)](https://paperswithcode.com/sota/traffic-prediction-on-pemsd7-l?p=a-decomposition-dynamic-graph-convolutional)
 ## Update
  (2024/3/22)
-* Added a hyperparameter `days_per_week` for easy adjustment of the index quantity of cyclic embeddings.
+* Added a hyperparameter `days_per_week` for easy adjustment of the index quantity of time embeddings.
 
 * Added instructions for using the hyperparameters `days_per_week` and `steps_per_day`.
 <details>
