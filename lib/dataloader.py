@@ -100,7 +100,7 @@ def get_dataloader(args, normalizer = 'std', tod=False, dow=False, weather=False
     feature_list.append(time_in_day)
 
     # numerical day_in_week
-    day_in_week = [(i // args.steps_per_day)%7 for i in range(data.shape[0])]
+    day_in_week = [(i // args.steps_per_day)%args.days_per_week for i in range(data.shape[0])]
     day_in_week = np.array(day_in_week)
     day_in_week = np.tile(day_in_week, [1, N, 1]).transpose((2, 1, 0))
     feature_list.append(day_in_week)
