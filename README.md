@@ -36,7 +36,7 @@ This is a PyTorch implementation of Decomposition Dynamic Graph Conolutional Rec
 
 * pre-trained:  pre-trained model parameters
 
-## Usage Instructions for Hyperparameters:
+## Usage Instructions for Hyperparameters
 
 `days_per_week`: The time intervals for data collection vary across different datasets. Adjust this hyperparameter based on the time intervals of the dataset being used. For example, in the PEMS04 dataset with a time interval of `5` minutes, set this parameter to `14400/5=288`. Similarly, in the NYC-Bike dataset with a time interval of `30` minutes, set this parameter to `14400/30=48`.
 
