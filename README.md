@@ -60,7 +60,7 @@ python run.py --dataset {DATASET_NAME} --mode {MODE_NAME}
 ```
 Replace `{DATASET_NAME}` with one of `PEMSD3`, `PEMSD4`, `PEMSD7`, `PEMSD8`, `PEMSD7(L)`, `PEMSD7(M)`
 
-such as `python run.py --datasets PEMSD4`
+such as `python run.py --dataset PEMSD4`
 
 There are two options for `{MODE_NAME}` : `train` and `test`
 
