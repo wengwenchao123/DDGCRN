@@ -88,3 +88,5 @@ If you find the paper useful, please cite as following:
 - [[Neural Networks] RGDAN: A random graph diffusion attention network for traffic prediction](https://doi.org/10.1016/j.neunet.2023.106093)
 
 - [[Neural Networks] PDG2Seq: Periodic Dynamic Graph to Sequence model for Traffic Flow Prediction](https://doi.org/10.1016/j.neunet.2024.106941)
+
+- [[TITS2025] Pattern-Matching Dynamic Memory Network for Dual-Mode Traffic Prediction](https://doi.org/10.1109/TITS.2025.3564564)
